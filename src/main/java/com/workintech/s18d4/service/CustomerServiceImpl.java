@@ -1,0 +1,39 @@
+package com.workintech.s18d4.service;
+
+import com.workintech.s18d4.entity.Customer;
+import com.workintech.s18d4.repository.CustomerRepository;
+import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@AllArgsConstructor
+@Service
+public class CustomerServiceImpl implements CustomerService{
+
+    //CustomerRepository injectiona ihtiyacımız var, final yazdıgımız için @Autowired yapmıyoruz.
+    private final CustomerRepository customerRepository;
+
+    @Override
+    public List<Customer> findAll() {
+        return customerRepository.findAll();
+    }
+
+    @Override
+    public Customer find(long id) {
+        //Burada doğrusu exception handler ile 404 falan döndürmek.
+        return  customerRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public Customer save(Customer customer) {
+        return customerRepository.save(customer);
+    }
+
+    @Override
+    public Customer delete(long id) {
+        Customer foundCustomer = find(id);
+        customerRepository.delete(foundCustomer);
+        return foundCustomer;
+    }
+}
